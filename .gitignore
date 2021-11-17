@@ -116,3 +116,7 @@ venv.bak/
 
 # Pytorch
 *.pth
+
+# user
+algolib_gen/
+workdir/
