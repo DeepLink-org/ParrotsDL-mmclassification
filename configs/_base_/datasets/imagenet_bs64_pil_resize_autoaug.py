@@ -29,17 +29,31 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
+<<<<<<< HEAD
         data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/train',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
         data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/val',
         ann_file='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/meta/val.txt',
+=======
+        data_prefix='data/imagenet/train',
+        pipeline=train_pipeline),
+    val=dict(
+        type=dataset_type,
+        data_prefix='data/imagenet/val',
+        ann_file='data/imagenet/meta/val.txt',
+>>>>>>> 3d60dbbfc70fc472333280a9af6c8b445fc9b6d2
         pipeline=test_pipeline),
     test=dict(
         # replace `data/val` with `data/test` for standard test
         type=dataset_type,
+<<<<<<< HEAD
         data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/val',
         ann_file='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/meta/val.txt',
+=======
+        data_prefix='data/imagenet/val',
+        ann_file='data/imagenet/meta/val.txt',
+>>>>>>> 3d60dbbfc70fc472333280a9af6c8b445fc9b6d2
         pipeline=test_pipeline))
 evaluation = dict(interval=1, metric='accuracy')
