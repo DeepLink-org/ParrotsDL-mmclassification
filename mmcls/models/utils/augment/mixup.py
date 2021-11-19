@@ -42,7 +42,7 @@ class BatchMixupLayer(BaseMixupLayer):
         super(BatchMixupLayer, self).__init__(*args, **kwargs)
 
     def mixup(self, img, gt_label):
-        one_hot_gt_label = F.one_hot(gt_label, num_classes=self.num_classes)
+        one_hot_gt_label = F.one_hot(gt_label, num_classes=self.num_classes).type_as(img)
         lam = np.random.beta(self.alpha, self.alpha)
         batch_size = img.size(0)
         index = torch.randperm(batch_size)

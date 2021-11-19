@@ -54,9 +54,9 @@ class WindowMSA(BaseModule):
 
         # About 2x faster than original impl
         Wh, Ww = self.window_size
-        rel_index_coords = self.double_step_seq(2 * Ww - 1, Wh, 1, Ww)
+        rel_index_coords = self.double_step_seq(2 * Ww - 1, Wh, 1, Ww).cuda()
         rel_position_index = rel_index_coords + rel_index_coords.T
-        rel_position_index = rel_position_index.flip(1).contiguous()
+        rel_position_index = rel_position_index.flip(1).contiguous().cpu()
         self.register_buffer('relative_position_index', rel_position_index)
 
         self.qkv = nn.Linear(embed_dims, embed_dims * 3, bias=qkv_bias)
