@@ -1,0 +1,27 @@
+global_configs:
+    reader: MemcachedReader
+    maxstep: None
+    benchmark: None
+    seed: None
+    pavi: None
+
+env_version:
+     pat : pat20211111 # pat 0.16
+     pyt : pt1.3v1_r0.1
+
+global_model_strategy:
+  dummydataset: None
+  dummydataloader: Parrots
+
+models:
+  - resnet50_b32x8_imagenet
+  - mobilenet_v2_b32x8_imagenet
+  - seresnet50_b32x8_imagenet
+  - shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet
+  - resnext50_32x4d_b32x8_imagenet
+  - regnetx_4.0gf_b32x8_imagenet
+  - swin_small_224_b16x64_300e_imagenet
+  - repvgg-A0_4xb64-coslr-120e_in1k
+  - vgg19bn_b32x8_imagenet
+  - mobilenet_v3_large_imagenet
+  - vit-base-p16_pt-64xb64_in1k-224
