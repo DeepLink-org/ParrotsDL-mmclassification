@@ -86,9 +86,10 @@ case $MODEL_NAME in
     "vit-base-p16_pt-64xb64_in1k-224")
         FULL_MODEL="vision_transformer/vit-base-p16_pt-64xb64_in1k-224"
         ;;
-    "vgg19bn_b32x8_imagenet")
-        FULL_MODEL="vgg/vgg19bn_b32x8_imagenet"
-        ;;
+    # 该模型存在精度未对其问题，低了8.23%，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7942
+    # "vgg19bn_b32x8_imagenet")
+    #     FULL_MODEL="vgg/vgg19bn_b32x8_imagenet"
+    #     ;;
     "resnext50_32x4d_b32x8_imagenet")
         FULL_MODEL="resnext/resnext50_32x4d_b32x8_imagenet"
         ;;
