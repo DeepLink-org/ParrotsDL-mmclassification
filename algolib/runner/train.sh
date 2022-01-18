@@ -46,13 +46,6 @@ export PYTHONPATH=$comroot:$pyroot:$PYTHONPATH
 export FRAME_NAME=mmcls    #customize for each frame
 export MODEL_NAME=$3
  
-# mmcv path
-CONDA_ROOT=/mnt/cache/share/platform/env/miniconda3.6
-MMCV_PATH=${CONDA_ROOT}/envs/${CONDA_DEFAULT_ENV}/mmcvs
-mmcv_version=1.3.12
-export PYTHONPATH=${MMCV_PATH}/${mmcv_version}:$PYTHONPATH
-
- 
 # init_path
 export PYTHONPATH=$init_path/common/sites/:$PYTHONPATH # necessary for init
  
