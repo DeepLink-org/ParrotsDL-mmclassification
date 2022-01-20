@@ -55,8 +55,8 @@ name=$3
 MODEL_NAME=$3
 g=$(($2<8?$2:8))
 array=( $@ )
-len=${#array[@]}
-EXTRA_ARGS=${array[@]:3:$len}
+EXTRA_ARGS=${array[@]:3}
+EXTRA_ARGS=${EXTRA_ARGS//--resume/--resume-from}
 SRUN_ARGS=${SRUN_ARGS:-""}
  
 # 5. model choice
