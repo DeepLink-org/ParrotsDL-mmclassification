@@ -8,7 +8,7 @@ global_configs:
 env_version:
     pat : 0.16
     pyt : pt1.3v1_r0.1
-    mmcv: 1.3.12
+    mmcv: 1.4.2
 
 
 global_model_strategy:
