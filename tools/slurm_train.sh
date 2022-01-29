@@ -7,7 +7,7 @@ CONDA_ROOT=/mnt/cache/share/platform/env/miniconda3.${version_p:4:1}
 MMCV_PATH=${CONDA_ROOT}/envs/${CONDA_DEFAULT_ENV}/mmcvs
 mmcv_version=1.3.12
 export PYTHONPATH=${MMCV_PATH}/${mmcv_version}:$PYTHONPATH
-export MMCV_HOME=/mnt/lustre/share_data/parrots_algolib/datasets/pretrain/mmcv
+export MMCV_HOME=/mnt/lustre/share_data/PAT/datasets/pretrain/mmcv
 
 PARTITION=$1
 JOB_NAME=$2
