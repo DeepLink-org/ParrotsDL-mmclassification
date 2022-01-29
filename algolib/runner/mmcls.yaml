@@ -7,7 +7,7 @@ global_configs:
 
 env_version:
     pat : 0.16
-    pyt : pt1.3v1_r0.1
+    pyt : pt1.5v4
     mmcv: 1.4.2
 
 
