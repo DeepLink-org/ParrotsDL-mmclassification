@@ -5,6 +5,12 @@ _base_ = [
 ]
 
 # dataset settings
+file_client_args = dict(
+    backend='petrel',
+    path_mapping=dict({
+        '/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+    }))
+# file_client_args = dict(backend='disk')
 dataset_type = 'ImageNet'
 
 img_norm_cfg = dict(
@@ -14,7 +20,7 @@ img_norm_cfg = dict(
     to_rgb=False)
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(type='RandomResizedCrop', size=224),
     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
     dict(type='Normalize', **img_norm_cfg),
@@ -23,7 +29,7 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_label'])
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(type='Resize', size=(256, -1)),
     dict(type='CenterCrop', crop_size=224),
     dict(type='Normalize', **img_norm_cfg),
