@@ -1,12 +1,18 @@
 _base_ = ['./pipelines/rand_aug.py']
 
 # dataset settings
+file_client_args = dict(
+    backend='petrel',
+    path_mapping=dict({
+        '/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+    }))
+# file_client_args = dict(backend='disk')
 dataset_type = 'ImageNet'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(
         type='RandomResizedCrop',
         size=224,
@@ -38,7 +44,7 @@ train_pipeline = [
 ]
 
 test_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(
         type='Resize',
         size=(256, -1),
