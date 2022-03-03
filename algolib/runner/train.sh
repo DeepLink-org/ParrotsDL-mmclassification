@@ -76,9 +76,10 @@ case $MODEL_NAME in
     "shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet")
         FULL_MODEL="shufflenet_v1/shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet"
         ;;
-    "vit-base-p16_pt-64xb64_in1k-224")
-        FULL_MODEL="vision_transformer/vit-base-p16_pt-64xb64_in1k-224"
-        ;;
+    # 该模型存在问题，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7940
+    # "vit-base-p16_pt-64xb64_in1k-224")
+    #     FULL_MODEL="vision_transformer/vit-base-p16_pt-64xb64_in1k-224"
+    #     ;;
     # 该模型存在精度未对其问题，低了8.23%，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7942
     # "vgg19bn_b32x8_imagenet")
     #     FULL_MODEL="vgg/vgg19bn_b32x8_imagenet"

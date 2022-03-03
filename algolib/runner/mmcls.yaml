@@ -25,6 +25,7 @@ models:
   - swin_small_224_b16x64_300e_imagenet
   - repvgg-A0_4xb64-coslr-120e_in1k
   - mobilenet_v3_large_imagenet
-  - vit-base-p16_pt-64xb64_in1k-224
+  # 该模型存在问题，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7940
+  # - vit-base-p16_pt-64xb64_in1k-224
   # 该模型存在精度未对其问题，低了8.23%，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7942
   # - vgg19bn_b32x8_imagenet
