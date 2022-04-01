@@ -2,7 +2,7 @@
 file_client_args = dict(
     backend='petrel',
     path_mapping=dict({
-        '/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+        '/mnt/lustre/share_data/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
     }))
 # file_client_args = dict(backend='disk')
 dataset_type = 'ImageNet'

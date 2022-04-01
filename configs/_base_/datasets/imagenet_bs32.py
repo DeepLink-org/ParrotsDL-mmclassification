@@ -2,7 +2,7 @@
 file_client_args = dict(
     backend='petrel',
     path_mapping=dict({
-        '/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+        '/mnt/lustre/share_data/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
     }))
 # file_client_args = dict(backend='disk')
 dataset_type = 'ImageNet'
@@ -30,17 +30,17 @@ data = dict(
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
-        data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/train',
+        data_prefix='/mnt/lustre/share_data/PAT/datasets/Imagenet/train',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/val',
-        ann_file='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/meta/val.txt',
+        data_prefix='/mnt/lustre/share_data/PAT/datasets/Imagenet/val',
+        ann_file='/mnt/lustre/share_data/PAT/datasets/Imagenet/meta/val.txt',
         pipeline=test_pipeline),
     test=dict(
         # replace `data/val` with `data/test` for standard test
         type=dataset_type,
-        data_prefix='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/val',
-        ann_file='/mnt/lustre/share_data/parrots_algolib/datasets/Imagenet/meta/val.txt',
+        data_prefix='/mnt/lustre/share_data/PAT/datasets/Imagenet/val',
+        ann_file='/mnt/lustre/share_data/PAT/datasets/Imagenet/meta/val.txt',
         pipeline=test_pipeline))
 evaluation = dict(interval=1, metric='accuracy')
