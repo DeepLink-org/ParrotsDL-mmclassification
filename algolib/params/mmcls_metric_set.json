@@ -1,0 +1,56 @@
+{
+    "resnet50_b32x8_imagenet": {
+        "rate": [
+            0.0,
+            0.01
+        ]
+    },
+    "mobilenet_v2_b32x8_imagenet": {
+        "rate": [
+            0.0,
+            0.01
+        ]
+    },
+    "seresnet50_b32x8_imagenet": {
+        "rate": [
+            0.0,
+            0.05
+        ]
+    },
+    "shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet": {
+        "rate": [
+            0.0,
+            0.01
+        ]
+    },
+    "resnext50_32x4d_b32x8_imagenet": {
+        "rate": [
+            0.0,
+            0.01
+        ]
+    },
+    "mobilenet_v3_large_imagenet": {
+        "rate": [
+            0.0,
+            0.01
+        ]
+    },
+    "regnetx_4.0gf_b32x8_imagenet": {
+        "rate": [
+            0.0,
+            0.7
+        ]
+    },
+    "repvgg-A0_4xb64-coslr-120e_in1k": {
+        "rate": [
+            0.0,
+            0.02
+        ]
+    },
+    "swin_small_224_b16x64_300e_imagenet": {
+        "rate": [
+            0.01,
+            0.02
+        ]
+    }
+}

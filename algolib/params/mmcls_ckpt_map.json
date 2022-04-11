@@ -1,0 +1,29 @@
+{
+    "resnet50_b32x8_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/resnet50_b32x8_imagenet/epoch_100.pth"
+    },
+    "mobilenet_v2_b32x8_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/mobilenet_v2_b32x8_imagenet/epoch_300.pth"
+    },
+    "seresnet50_b32x8_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/seresnet50_b32x8_imagenet/epoch_140.pth"
+    },
+    "shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet/epoch_300.pth"
+    },
+    "resnext50_32x4d_b32x8_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/resnext50_32x4d_b32x8_imagenet/epoch_100.pth"
+    },
+    "mobilenet_v3_large_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/mobilenet_v3_large_imagenet/epoch_600.pth"
+    },
+    "regnetx_4.0gf_b32x8_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/regnetx_4.0gf_b32x8_imagenet/epoch_100.pth"
+    },
+    "repvgg-A0_4xb64-coslr-120e_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/repvgg-A0_4xb64-coslr-120e_in1k/epoch_120.pth"
+    },
+    "swin_small_224_b16x64_300e_imagenet": {
+        "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/swin_small_224_b16x64_300e_imagenet/epoch_300.pth"
+    }
+}
