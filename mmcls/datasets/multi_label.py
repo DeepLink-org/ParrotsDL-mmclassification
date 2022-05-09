@@ -1,5 +1,5 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import warnings
+from typing import List
 
 import numpy as np
 
@@ -10,25 +10,25 @@ from .base_dataset import BaseDataset
 class MultiLabelDataset(BaseDataset):
     """Multi-label Dataset."""
 
-    def get_cat_ids(self, idx):
+    def get_cat_ids(self, idx: int) -> List[int]:
         """Get category ids by index.
 
         Args:
             idx (int): Index of data.
 
         Returns:
-            np.ndarray: Image categories of specified index.
+            cat_ids (List[int]): Image categories of specified index.
         """
         gt_labels = self.data_infos[idx]['gt_label']
-        cat_ids = np.where(gt_labels == 1)[0]
+        cat_ids = np.where(gt_labels == 1)[0].tolist()
         return cat_ids
 
     def evaluate(self,
                  results,
                  metric='mAP',
                  metric_options=None,
-                 logger=None,
-                 **deprecated_kwargs):
+                 indices=None,
+                 logger=None):
         """Evaluate the dataset.
 
         Args:
@@ -40,18 +40,12 @@ class MultiLabelDataset(BaseDataset):
                 Allowed keys are 'k' and 'thr'. Defaults to None
             logger (logging.Logger | str, optional): Logger used for printing
                 related information during evaluation. Defaults to None.
-            deprecated_kwargs (dict): Used for containing deprecated arguments.
 
         Returns:
             dict: evaluation results
         """
-        if metric_options is None:
+        if metric_options is None or metric_options == {}:
             metric_options = {'thr': 0.5}
-
-        if deprecated_kwargs != {}:
-            warnings.warn('Option arguments for metrics has been changed to '
-                          '`metric_options`.')
-            metric_options = {**deprecated_kwargs}
 
         if isinstance(metric, str):
             metrics = [metric]
@@ -61,6 +55,8 @@ class MultiLabelDataset(BaseDataset):
         eval_results = {}
         results = np.vstack(results)
         gt_labels = self.get_gt_labels()
+        if indices is not None:
+            gt_labels = gt_labels[indices]
         num_imgs = len(results)
         assert len(gt_labels) == num_imgs, 'dataset testing results should '\
             'be of the same length as gt_labels.'

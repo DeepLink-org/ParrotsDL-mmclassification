@@ -1,6 +1,9 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 import copy
+import os.path as osp
 from abc import ABCMeta, abstractmethod
+from os import PathLike
+from typing import List
 
 import mmcv
 import numpy as np
@@ -9,6 +12,13 @@ from torch.utils.data import Dataset
 from mmcls.core.evaluation import precision_recall_f1, support
 from mmcls.models.losses import accuracy
 from .pipelines import Compose
+
+
+def expanduser(path):
+    if isinstance(path, (str, PathLike)):
+        return osp.expanduser(path)
+    else:
+        return path
 
 
 class BaseDataset(Dataset, metaclass=ABCMeta):
@@ -33,11 +43,11 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
                  ann_file=None,
                  test_mode=False):
         super(BaseDataset, self).__init__()
-        self.ann_file = ann_file
-        self.data_prefix = data_prefix
-        self.test_mode = test_mode
+        self.data_prefix = expanduser(data_prefix)
         self.pipeline = Compose(pipeline)
         self.CLASSES = self.get_classes(classes)
+        self.ann_file = expanduser(ann_file)
+        self.test_mode = test_mode
         self.data_infos = self.load_annotations()
 
     @abstractmethod
@@ -58,23 +68,23 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
         """Get all ground-truth labels (categories).
 
         Returns:
-            list[int]: categories for all images.
+            np.ndarray: categories for all images.
         """
 
         gt_labels = np.array([data['gt_label'] for data in self.data_infos])
         return gt_labels
 
-    def get_cat_ids(self, idx):
+    def get_cat_ids(self, idx: int) -> List[int]:
         """Get category id by index.
 
         Args:
             idx (int): Index of data.
 
         Returns:
-            int: Image category of specified index.
+            cat_ids (List[int]): Image category of specified index.
         """
 
-        return self.data_infos[idx]['gt_label'].astype(np.int)
+        return [int(self.data_infos[idx]['gt_label'])]
 
     def prepare_data(self, idx):
         results = copy.deepcopy(self.data_infos[idx])
@@ -105,7 +115,7 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
 
         if isinstance(classes, str):
             # take it as a file path
-            class_names = mmcv.list_from_file(classes)
+            class_names = mmcv.list_from_file(expanduser(classes))
         elif isinstance(classes, (tuple, list)):
             class_names = classes
         else:
@@ -117,6 +127,7 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
                  results,
                  metric='accuracy',
                  metric_options=None,
+                 indices=None,
                  logger=None):
         """Evaluate the dataset.
 
@@ -127,6 +138,8 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
             metric_options (dict, optional): Options for calculating metrics.
                 Allowed keys are 'topk', 'thrs' and 'average_mode'.
                 Defaults to None.
+            indices (list, optional): The indices of samples corresponding to
+                the results. Defaults to None.
             logger (logging.Logger | str, optional): Logger used for printing
                 related information during evaluation. Defaults to None.
         Returns:
@@ -144,6 +157,8 @@ class BaseDataset(Dataset, metaclass=ABCMeta):
         eval_results = {}
         results = np.vstack(results)
         gt_labels = self.get_gt_labels()
+        if indices is not None:
+            gt_labels = gt_labels[indices]
         num_imgs = len(results)
         assert len(gt_labels) == num_imgs, 'dataset testing results should '\
             'be of the same length as gt_labels.'
