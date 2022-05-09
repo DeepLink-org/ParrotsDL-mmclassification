@@ -1,22 +1,14 @@
 # Copyright (c) OpenMMLab. All rights reserved.
-import warnings
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
+from typing import Sequence
 
 import mmcv
 import torch
 import torch.distributed as dist
-from mmcv.runner import BaseModule
+from mmcv.runner import BaseModule, auto_fp16
 
 from mmcls.core.visualization import imshow_infos
-
-# TODO import `auto_fp16` from mmcv and delete them from mmcls
-try:
-    from mmcv.runner import auto_fp16
-except ImportError:
-    warnings.warn('auto_fp16 from mmcls will be deprecated.'
-                  'Please install mmcv>=1.1.4.')
-    from mmcls.core import auto_fp16
 
 
 class BaseClassifier(BaseModule, metaclass=ABCMeta):
@@ -35,13 +27,14 @@ class BaseClassifier(BaseModule, metaclass=ABCMeta):
         return hasattr(self, 'head') and self.head is not None
 
     @abstractmethod
-    def extract_feat(self, imgs):
+    def extract_feat(self, imgs, stage=None):
         pass
 
-    def extract_feats(self, imgs):
-        assert isinstance(imgs, list)
+    def extract_feats(self, imgs, stage=None):
+        assert isinstance(imgs, Sequence)
+        kwargs = {} if stage is None else {'stage': stage}
         for img in imgs:
-            yield self.extract_feat(img)
+            yield self.extract_feat(img, **kwargs)
 
     @abstractmethod
     def forward_train(self, imgs, **kwargs):
@@ -118,7 +111,7 @@ class BaseClassifier(BaseModule, metaclass=ABCMeta):
 
         return loss, log_vars
 
-    def train_step(self, data, optimizer):
+    def train_step(self, data, optimizer=None, **kwargs):
         """The iteration step during training.
 
         This method defines an iteration step during training, except for the
@@ -129,9 +122,9 @@ class BaseClassifier(BaseModule, metaclass=ABCMeta):
 
         Args:
             data (dict): The output of dataloader.
-            optimizer (:obj:`torch.optim.Optimizer` | dict): The optimizer of
-                runner is passed to ``train_step()``. This argument is unused
-                and reserved.
+            optimizer (:obj:`torch.optim.Optimizer` | dict, optional): The
+                optimizer of runner is passed to ``train_step()``. This
+                argument is unused and reserved.
 
         Returns:
             dict: Dict of outputs. The following fields are contained.
@@ -151,12 +144,28 @@ class BaseClassifier(BaseModule, metaclass=ABCMeta):
 
         return outputs
 
-    def val_step(self, data, optimizer):
+    def val_step(self, data, optimizer=None, **kwargs):
         """The iteration step during validation.
 
         This method shares the same signature as :func:`train_step`, but used
         during val epochs. Note that the evaluation after training epochs is
         not implemented with this method, but an evaluation hook.
+
+        Args:
+            data (dict): The output of dataloader.
+            optimizer (:obj:`torch.optim.Optimizer` | dict, optional): The
+                optimizer of runner is passed to ``train_step()``. This
+                argument is unused and reserved.
+
+        Returns:
+            dict: Dict of outputs. The following fields are contained.
+                - loss (torch.Tensor): A tensor for back propagation, which \
+                    can be a weighted sum of multiple losses.
+                - log_vars (dict): Dict contains all the variables to be sent \
+                    to the logger.
+                - num_samples (int): Indicates the batch size (when the model \
+                    is DDP, it means the batch size on each GPU), which is \
+                    used for averaging the logs.
         """
         losses = self(**data)
         loss, log_vars = self._parse_losses(losses)

@@ -66,6 +66,9 @@ def parse_requirements(fname='requirements.txt', with_version=True):
                         info['platform_deps'] = platform_deps
                     else:
                         version = rest  # NOQA
+                    if '--' in version:
+                        # the `extras_require` doesn't accept options.
+                        version = version.split('--')[0].strip()
                     info['version'] = (op, version)
             yield info
 
@@ -131,8 +134,20 @@ def add_mim_extension():
 
             if mode == 'symlink':
                 src_relpath = osp.relpath(src_path, osp.dirname(tar_path))
-                os.symlink(src_relpath, tar_path)
-            elif mode == 'copy':
+                try:
+                    os.symlink(src_relpath, tar_path)
+                except OSError:
+                    # Creating a symbolic link on windows may raise an
+                    # `OSError: [WinError 1314]` due to privilege. If
+                    # the error happens, the src file will be copied
+                    mode = 'copy'
+                    warnings.warn(
+                        f'Failed to create a symbolic link for {src_relpath}, '
+                        f'and it will be copied to {tar_path}')
+                else:
+                    continue
+
+            if mode == 'copy':
                 if osp.isfile(src_path):
                     shutil.copyfile(src_path, tar_path)
                 elif osp.isdir(src_path):
@@ -151,10 +166,7 @@ if __name__ == '__main__':
         description='OpenMMLab Image Classification Toolbox and Benchmark',
         long_description=readme(),
         long_description_content_type='text/markdown',
-        author='MMClassification Contributors',
-        author_email='openmmlab@gmail.com',
         keywords='computer vision, image classification',
-        url='https://github.com/open-mmlab/mmclassification',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         include_package_data=True,
         classifiers=[
@@ -162,13 +174,20 @@ if __name__ == '__main__':
             'License :: OSI Approved :: Apache Software License',
             'Operating System :: OS Independent',
             'Programming Language :: Python :: 3',
-            'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
+            'Topic :: Scientific/Engineering :: Artificial Intelligence',
         ],
+        url='https://github.com/open-mmlab/mmclassification',
+        author='MMClassification Contributors',
+        author_email='openmmlab@gmail.com',
         license='Apache License 2.0',
-        tests_require=parse_requirements('requirements/tests.txt'),
         install_requires=parse_requirements('requirements/runtime.txt'),
+        extras_require={
+            'all': parse_requirements('requirements.txt'),
+            'tests': parse_requirements('requirements/tests.txt'),
+            'optional': parse_requirements('requirements/optional.txt'),
+        },
         zip_safe=False)

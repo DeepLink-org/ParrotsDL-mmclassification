@@ -1,21 +1,51 @@
 <div align="center">
+
   <img src="resources/mmcls-logo.png" width="600"/>
+  <div>&nbsp;</div>
+  <div align="center">
+    <b><font size="5">OpenMMLab 官网</font></b>
+    <sup>
+      <a href="https://openmmlab.com">
+        <i><font size="4">HOT</font></i>
+      </a>
+    </sup>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <b><font size="5">OpenMMLab 开放平台</font></b>
+    <sup>
+      <a href="https://platform.openmmlab.com">
+        <i><font size="4">TRY IT OUT</font></i>
+      </a>
+    </sup>
+  </div>
+  <div>&nbsp;</div>
+
+  [![PyPI](https://img.shields.io/pypi/v/mmcls)](https://pypi.org/project/mmcls)
+  [![Docs](https://img.shields.io/badge/docs-latest-blue)](https://mmclassification.readthedocs.io/zh_CN/latest/)
+  [![Build Status](https://github.com/open-mmlab/mmclassification/workflows/build/badge.svg)](https://github.com/open-mmlab/mmclassification/actions)
+  [![codecov](https://codecov.io/gh/open-mmlab/mmclassification/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmclassification)
+  [![license](https://img.shields.io/github/license/open-mmlab/mmclassification.svg)](https://github.com/open-mmlab/mmclassification/blob/master/LICENSE)
+  [![open issues](https://isitmaintained.com/badge/open/open-mmlab/mmclassification.svg)](https://github.com/open-mmlab/mmclassification/issues)
+  [![issue resolution](https://isitmaintained.com/badge/resolution/open-mmlab/mmclassification.svg)](https://github.com/open-mmlab/mmclassification/issues)
+
+  [📘 中文文档](https://mmclassification.readthedocs.io/zh_CN/latest/) |
+  [🛠️ 安装教程](https://mmclassification.readthedocs.io/zh_CN/latest/install.html) |
+  [👀 模型库](https://mmclassification.readthedocs.io/zh_CN/latest/model_zoo.html) |
+  [🆕 更新日志](https://mmclassification.readthedocs.io/en/latest/changelog.html) |
+  [🤔 报告问题](https://github.com/open-mmlab/mmclassification/issues/new/choose)
+
 </div>
-
-[English](/README.md) | 简体中文
-
-[![Build Status](https://github.com/open-mmlab/mmclassification/workflows/build/badge.svg)](https://github.com/open-mmlab/mmclassification/actions)
-[![Documentation Status](https://readthedocs.org/projects/mmclassification/badge/?version=latest)](https://mmclassification.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/open-mmlab/mmclassification/branch/master/graph/badge.svg)](https://codecov.io/gh/open-mmlab/mmclassification)
-[![license](https://img.shields.io/github/license/open-mmlab/mmclassification.svg)](https://github.com/open-mmlab/mmclassification/blob/master/LICENSE)
 
 ## Introduction
 
+[English](/README.md) | 简体中文
+
 MMClassification 是一款基于 PyTorch 的开源图像分类工具箱，是 [OpenMMLab](https://openmmlab.com/) 项目的成员之一
 
-参考文档：https://mmclassification.readthedocs.io/en/latest/
+主分支代码目前支持 PyTorch 1.5 以上的版本。
 
-![demo](https://user-images.githubusercontent.com/9102141/87268895-3e0d0780-c4fe-11ea-849e-6140b7e0d4de.gif)
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/9102141/87268895-3e0d0780-c4fe-11ea-849e-6140b7e0d4de.gif" width="70%"/>
+</div>
 
 ### 主要特性
 
@@ -23,50 +53,97 @@ MMClassification 是一款基于 PyTorch 的开源图像分类工具箱，是 [O
 - 支持配置多种训练技巧
 - 大量的训练配置文件
 - 高效率和高可扩展性
-
-## 许可证
-
-该项目开源自 [Apache 2.0 license](LICENSE).
+- 功能强大的工具箱
 
 ## 更新日志
 
-2021/10/29 发布了 v0.17.0 版本
+2022/3/30 发布了 v0.22.0 版本
 
-新版本的一些新功能如下：
-- 支持了 **Tokens-to-Token ViT** 主干网络和 **Res2Net** 主干网络，欢迎使用！
-- 支持了 **ImageNet21k** 数据集
-- 添加了一个**可视化数据预处理**的工具，可以参考[教程](https://mmclassification.readthedocs.io/zh_CN/latest/tools/visualization.html#id2)使用
+新版本亮点：
+- 支持了一系列 **CSP Net**，包括 CSP-ResNet，CSP-ResNeXt 和 CSP-DarkNet。
+- 我们提供了一个新的 `CustomDataset` 类，这个类将帮助你轻松使用**自己的数据集**！
+- 支持了新的主干网络 **ConvMixer**、**RepMLP** 和一个新的数据集 **CUB dataset**。
 
-发布历史和更新细节请参考 [更新日志](docs/changelog.md)
+2022/3/4 发布了 v0.21.0 版本
 
-## 基准测试及模型库
+新版本亮点：
+- 支持了 **ResNetV1c** 和 **Wide-ResNet** 两个 ResNet 变种，并提供了预训练模型
+- ViT 相关模型支持 **动态输入尺寸**。现在我们的 ViT，DeiT，Swin-Transformer 和 T2T-ViT 支持任意尺寸的输入。
+- 复现了 DeiT 的训练结果，并且我们的 DeiT-T 和 DeiT-S 拥有比官方权重 **更高的精度**。
 
-相关结果和模型可在 [model zoo](docs/model_zoo.md) 中获得
-
-支持的主干网络：
-
-- [x] ResNet
-- [x] ResNeXt
-- [x] SE-ResNet
-- [x] SE-ResNeXt
-- [x] RegNet
-- [x] ShuffleNetV1
-- [x] ShuffleNetV2
-- [x] MobileNetV2
-- [x] MobileNetV3
-- [x] Swin-Transformer
+发布历史和更新细节请参考 [更新日志](docs/en/changelog.md)
 
 ## 安装
 
-请参考 [安装指南](docs_zh-CN/install.md) 进行安装
+以下是安装的简要步骤：
+
+```shell
+conda create -n open-mmlab python=3.8 pytorch=1.10 cudatoolkit=11.3 torchvision -c pytorch -y
+conda activate open-mmlab
+pip3 install openmim
+mim install mmcv-full
+git clone https://github.com/open-mmlab/mmclassification.git
+cd mmclassification
+pip3 install -e .
+```
+
+更详细的步骤请参考 [安装指南](https://mmclassification.readthedocs.io/zh_CN/latest/install.html) 进行安装。
 
 ## 基础教程
 
-请参考 [基础教程](docs_zh-CN/getting_started.md) 来了解 MMClassification 的基本使用。其中还包含了 [如何微调模型](docs_zh-CN/tutorials/finetune.md), [如何增加新数据集](docs_zh-CN/tutorials/new_dataset.md), [如何设计数据处理流程](docs_zh-CN/tutorials/data_pipeline.md), 以及 [如何增加新模块](docs_zh-CN/tutorials/new_modules.md) 等指南。
+请参考 [基础教程](https://mmclassification.readthedocs.io/zh_CN/latest/getting_started.html) 来了解 MMClassification 的基本使用。MMClassification 也提供了其他更详细的教程：
+
+- [如何编写配置文件](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/config.html)
+- [如何微调模型](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/finetune.html)
+- [如何增加新数据集](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/new_dataset.html)
+- [如何设计数据处理流程](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/data_pipeline.html)
+- [如何增加新模块](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/new_modules.html)
+- [如何自定义优化策略](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/schedule.html)
+- [如何自定义运行参数](https://mmclassification.readthedocs.io/zh_CN/latest/tutorials/runtime.html)
+
+我们也提供了相应的中文 Colab 教程：
+
+- 了解 MMClassification **Python API**：[预览 Notebook](https://github.com/open-mmlab/mmclassification/blob/master/docs/zh_CN/tutorials/MMClassification_python_cn.ipynb) 或者直接[在 Colab 上运行](https://colab.research.google.com/github/open-mmlab/mmclassification/blob/master/docs/zh_CN/tutorials/MMClassification_python_cn.ipynb)。
+- 了解 MMClassification **命令行工具**：[预览 Notebook](https://github.com/open-mmlab/mmclassification/blob/master/docs/zh_CN/tutorials/MMClassification_tools_cn.ipynb) 或者直接[在 Colab 上运行](https://colab.research.google.com/github/open-mmlab/mmclassification/blob/master/docs/zh_CN/tutorials/MMClassification_tools_cn.ipynb)。
+
+## 模型库
+
+相关结果和模型可在 [model zoo](https://mmclassification.readthedocs.io/en/latest/model_zoo.html) 中获得
+
+<details open>
+<summary>支持的主干网络</summary>
+
+- [x] [VGG](https://github.com/open-mmlab/mmclassification/tree/master/configs/vgg)
+- [x] [ResNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/resnet)
+- [x] [ResNeXt](https://github.com/open-mmlab/mmclassification/tree/master/configs/resnext)
+- [x] [SE-ResNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/seresnet)
+- [x] [SE-ResNeXt](https://github.com/open-mmlab/mmclassification/tree/master/configs/seresnet)
+- [x] [RegNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/repvgg)
+- [x] [ShuffleNetV1](https://github.com/open-mmlab/mmclassification/tree/master/configs/shufflenet_v1)
+- [x] [ShuffleNetV2](https://github.com/open-mmlab/mmclassification/tree/master/configs/shufflenet_v2)
+- [x] [MobileNetV2](https://github.com/open-mmlab/mmclassification/tree/master/configs/mobilenet_v2)
+- [x] [MobileNetV3](https://github.com/open-mmlab/mmclassification/tree/master/configs/mobilenet_v3)
+- [x] [Swin-Transformer](https://github.com/open-mmlab/mmclassification/tree/master/configs/swin_transformer)
+- [x] [RepVGG](https://github.com/open-mmlab/mmclassification/tree/master/configs/repvgg)
+- [x] [Vision-Transformer](https://github.com/open-mmlab/mmclassification/tree/master/configs/vision_transformer)
+- [x] [Transformer-in-Transformer](https://github.com/open-mmlab/mmclassification/tree/master/configs/tnt)
+- [x] [Res2Net](https://github.com/open-mmlab/mmclassification/tree/master/configs/res2net)
+- [x] [MLP-Mixer](https://github.com/open-mmlab/mmclassification/tree/master/configs/mlp_mixer)
+- [x] [DeiT](https://github.com/open-mmlab/mmclassification/tree/master/configs/deit)
+- [x] [Conformer](https://github.com/open-mmlab/mmclassification/tree/master/configs/conformer)
+- [x] [T2T-ViT](https://github.com/open-mmlab/mmclassification/tree/master/configs/t2t_vit)
+- [x] [Twins](https://github.com/open-mmlab/mmclassification/tree/master/configs/twins)
+- [x] [EfficientNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/efficientnet)
+- [x] [ConvNeXt](https://github.com/open-mmlab/mmclassification/tree/master/configs/convnext)
+- [x] [HRNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/hrnet)
+- [x] [ConvMixer](https://github.com/open-mmlab/mmclassification/tree/master/configs/convmixer)
+- [x] [CSPNet](https://github.com/open-mmlab/mmclassification/tree/master/configs/cspnet)
+
+</details>
 
 ## 参与贡献
 
-我们非常欢迎任何有助于提升 MMClassification 的贡献，请参考 [贡献指南](docs_zh-CN/community/CONTRIBUTING.md) 来了解如何参与贡献。
+我们非常欢迎任何有助于提升 MMClassification 的贡献，请参考 [贡献指南](https://mmclassification.readthedocs.io/zh_CN/latest/community/CONTRIBUTING.html) 来了解如何参与贡献。
 
 ## 致谢
 
@@ -74,26 +151,51 @@ MMClassification 是一款由不同学校和公司共同贡献的开源项目。
 
 我们希望该工具箱和基准测试可以为社区提供灵活的代码工具，供用户复现现有算法并开发自己的新模型，从而不断为开源社区提供贡献。
 
+## 引用
+
+如果你在研究中使用了本项目的代码或者性能基准，请参考如下 bibtex 引用 MMClassification。
+
+```BibTeX
+@misc{2020mmclassification,
+    title={OpenMMLab's Image Classification Toolbox and Benchmark},
+    author={MMClassification Contributors},
+    howpublished = {\url{https://github.com/open-mmlab/mmclassification}},
+    year={2020}
+}
+```
+
+## 许可证
+
+该项目开源自 [Apache 2.0 license](LICENSE).
+
 ## OpenMMLab 的其他项目
 
 - [MMCV](https://github.com/open-mmlab/mmcv): OpenMMLab 计算机视觉基础库
 - [MIM](https://github.com/open-mmlab/mim): MIM 是 OpenMMlab 项目、算法、模型的统一入口
-- [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab 检测工具箱与测试基准
+- [MMClassification](https://github.com/open-mmlab/mmclassification): OpenMMLab 图像分类工具箱
+- [MMDetection](https://github.com/open-mmlab/mmdetection): OpenMMLab 目标检测工具箱
 - [MMDetection3D](https://github.com/open-mmlab/mmdetection3d): OpenMMLab 新一代通用 3D 目标检测平台
-- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab 语义分割工具箱与测试基准
-- [MMAction2](https://github.com/open-mmlab/mmaction2): OpenMMLab 新一代视频理解工具箱与测试基准
-- [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab 一体化视频目标感知平台
-- [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab 姿态估计工具箱与测试基准
-- [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab 图像视频编辑工具箱
+- [MMRotate](https://github.com/open-mmlab/mmrotate): OpenMMLab 旋转框检测工具箱与测试基准
+- [MMSegmentation](https://github.com/open-mmlab/mmsegmentation): OpenMMLab 语义分割工具箱
 - [MMOCR](https://github.com/open-mmlab/mmocr): OpenMMLab 全流程文字检测识别理解工具包
-- [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 生成模型工具箱
+- [MMPose](https://github.com/open-mmlab/mmpose): OpenMMLab 姿态估计工具箱
+- [MMHuman3D](https://github.com/open-mmlab/mmhuman3d): OpenMMLab 人体参数化模型工具箱与测试基准
+- [MMSelfSup](https://github.com/open-mmlab/mmselfsup): OpenMMLab 自监督学习工具箱与测试基准
+- [MMRazor](https://github.com/open-mmlab/mmrazor): OpenMMLab 模型压缩工具箱与测试基准
+- [MMFewShot](https://github.com/open-mmlab/mmfewshot): OpenMMLab 少样本学习工具箱与测试基准
+- [MMAction2](https://github.com/open-mmlab/mmaction2): OpenMMLab 新一代视频理解工具箱
+- [MMTracking](https://github.com/open-mmlab/mmtracking): OpenMMLab 一体化视频目标感知平台
+- [MMFlow](https://github.com/open-mmlab/mmflow): OpenMMLab 光流估计工具箱与测试基准
+- [MMEditing](https://github.com/open-mmlab/mmediting): OpenMMLab 图像视频编辑工具箱
+- [MMGeneration](https://github.com/open-mmlab/mmgeneration): OpenMMLab 图片视频生成模型工具箱
+- [MMDeploy](https://github.com/open-mmlab/mmdeploy): OpenMMLab 模型部署框架
 
 ## 欢迎加入 OpenMMLab 社区
 
-扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 OpenMMLab 团队的 [官方交流 QQ 群](https://jq.qq.com/?_wv=1027&k=GJP18SjI)
+扫描下方的二维码可关注 OpenMMLab 团队的 [知乎官方账号](https://www.zhihu.com/people/openmmlab)，加入 OpenMMLab 团队的 [官方交流 QQ 群](https://jq.qq.com/?_wv=1027&k=aCvMxdr3) 或联络 OpenMMLab 官方微信小助手
 
 <div align="center">
-<img src="/docs/imgs/zhihu_qrcode.jpg" height="400" />  <img src="/docs/imgs/qq_group_qrcode.jpg" height="400" />
+<img src="https://github.com/open-mmlab/mmcv/raw/master/docs/en/_static/zhihu_qrcode.jpg" height="400" />  <img src="https://github.com/open-mmlab/mmcv/raw/master/docs/en/_static/qq_group_qrcode.jpg" height="400" /> <img src="https://github.com/open-mmlab/mmcv/raw/master/docs/en/_static/wechat_qrcode.jpg" height="400" />
 </div>
 
 我们会在 OpenMMLab 社区为大家

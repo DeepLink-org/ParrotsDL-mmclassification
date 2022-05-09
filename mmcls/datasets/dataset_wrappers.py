@@ -4,6 +4,7 @@ import math
 from collections import defaultdict
 
 import numpy as np
+from mmcv.utils import print_log
 from torch.utils.data.dataset import ConcatDataset as _ConcatDataset
 
 from .builder import DATASETS
@@ -18,11 +19,22 @@ class ConcatDataset(_ConcatDataset):
 
     Args:
         datasets (list[:obj:`Dataset`]): A list of datasets.
+        separate_eval (bool): Whether to evaluate the results
+            separately if it is used as validation dataset.
+            Defaults to True.
     """
 
-    def __init__(self, datasets):
+    def __init__(self, datasets, separate_eval=True):
         super(ConcatDataset, self).__init__(datasets)
+        self.separate_eval = separate_eval
+
         self.CLASSES = datasets[0].CLASSES
+
+        if not separate_eval:
+            if len(set([type(ds) for ds in datasets])) != 1:
+                raise NotImplementedError(
+                    'To evaluate a concat dataset non-separately, '
+                    'all the datasets should have same types')
 
     def get_cat_ids(self, idx):
         if idx < 0:
@@ -36,6 +48,63 @@ class ConcatDataset(_ConcatDataset):
         else:
             sample_idx = idx - self.cumulative_sizes[dataset_idx - 1]
         return self.datasets[dataset_idx].get_cat_ids(sample_idx)
+
+    def evaluate(self, results, *args, indices=None, logger=None, **kwargs):
+        """Evaluate the results.
+
+        Args:
+            results (list[list | tuple]): Testing results of the dataset.
+            indices (list, optional): The indices of samples corresponding to
+                the results. It's unavailable on ConcatDataset.
+                Defaults to None.
+            logger (logging.Logger | str, optional): Logger used for printing
+                related information during evaluation. Defaults to None.
+
+        Returns:
+            dict[str: float]: AP results of the total dataset or each separate
+            dataset if `self.separate_eval=True`.
+        """
+        if indices is not None:
+            raise NotImplementedError(
+                'Use indices to evaluate speific samples in a ConcatDataset '
+                'is not supported by now.')
+
+        assert len(results) == len(self), \
+            ('Dataset and results have different sizes: '
+             f'{len(self)} v.s. {len(results)}')
+
+        # Check whether all the datasets support evaluation
+        for dataset in self.datasets:
+            assert hasattr(dataset, 'evaluate'), \
+                f"{type(dataset)} haven't implemented the evaluate function."
+
+        if self.separate_eval:
+            total_eval_results = dict()
+            for dataset_idx, dataset in enumerate(self.datasets):
+                start_idx = 0 if dataset_idx == 0 else \
+                    self.cumulative_sizes[dataset_idx-1]
+                end_idx = self.cumulative_sizes[dataset_idx]
+
+                results_per_dataset = results[start_idx:end_idx]
+                print_log(
+                    f'Evaluateing dataset-{dataset_idx} with '
+                    f'{len(results_per_dataset)} images now',
+                    logger=logger)
+
+                eval_results_per_dataset = dataset.evaluate(
+                    results_per_dataset, *args, logger=logger, **kwargs)
+                for k, v in eval_results_per_dataset.items():
+                    total_eval_results.update({f'{dataset_idx}_{k}': v})
+
+            return total_eval_results
+        else:
+            original_data_infos = self.datasets[0].data_infos
+            self.datasets[0].data_infos = sum(
+                [dataset.data_infos for dataset in self.datasets], [])
+            eval_results = self.datasets[0].evaluate(
+                results, logger=logger, **kwargs)
+            self.datasets[0].data_infos = original_data_infos
+            return eval_results
 
 
 @DATASETS.register_module()
@@ -67,6 +136,20 @@ class RepeatDataset(object):
 
     def __len__(self):
         return self.times * self._ori_len
+
+    def evaluate(self, *args, **kwargs):
+        raise NotImplementedError(
+            'evaluate results on a repeated dataset is weird. '
+            'Please inference and evaluate on the original dataset.')
+
+    def __repr__(self):
+        """Print the number of instance number."""
+        dataset_type = 'Test' if self.test_mode else 'Train'
+        result = (
+            f'\n{self.__class__.__name__} ({self.dataset.__class__.__name__}) '
+            f'{dataset_type} dataset with total number of samples {len(self)}.'
+        )
+        return result
 
 
 # Modified from https://github.com/facebookresearch/detectron2/blob/41d475b75a230221e21d9cac5d69655e3415e3a4/detectron2/data/samplers/distributed_sampler.py#L57 # noqa
@@ -170,3 +253,78 @@ class ClassBalancedDataset(object):
 
     def __len__(self):
         return len(self.repeat_indices)
+
+    def evaluate(self, *args, **kwargs):
+        raise NotImplementedError(
+            'evaluate results on a class-balanced dataset is weird. '
+            'Please inference and evaluate on the original dataset.')
+
+    def __repr__(self):
+        """Print the number of instance number."""
+        dataset_type = 'Test' if self.test_mode else 'Train'
+        result = (
+            f'\n{self.__class__.__name__} ({self.dataset.__class__.__name__}) '
+            f'{dataset_type} dataset with total number of samples {len(self)}.'
+        )
+        return result
+
+
+@DATASETS.register_module()
+class KFoldDataset:
+    """A wrapper of dataset for K-Fold cross-validation.
+
+    K-Fold cross-validation divides all the samples in groups of samples,
+    called folds, of almost equal sizes. And we use k-1 of folds to do training
+    and use the fold left to do validation.
+
+    Args:
+        dataset (:obj:`CustomDataset`): The dataset to be divided.
+        fold (int): The fold used to do validation. Defaults to 0.
+        num_splits (int): The number of all folds. Defaults to 5.
+        test_mode (bool): Use the training dataset or validation dataset.
+            Defaults to False.
+        seed (int, optional): The seed to shuffle the dataset before splitting.
+            If None, not shuffle the dataset. Defaults to None.
+    """
+
+    def __init__(self,
+                 dataset,
+                 fold=0,
+                 num_splits=5,
+                 test_mode=False,
+                 seed=None):
+        self.dataset = dataset
+        self.CLASSES = dataset.CLASSES
+        self.test_mode = test_mode
+        self.num_splits = num_splits
+
+        length = len(dataset)
+        indices = list(range(length))
+        if isinstance(seed, int):
+            rng = np.random.default_rng(seed)
+            rng.shuffle(indices)
+
+        test_start = length * fold // num_splits
+        test_end = length * (fold + 1) // num_splits
+        if test_mode:
+            self.indices = indices[test_start:test_end]
+        else:
+            self.indices = indices[:test_start] + indices[test_end:]
+
+    def get_cat_ids(self, idx):
+        return self.dataset.get_cat_ids(self.indices[idx])
+
+    def get_gt_labels(self):
+        dataset_gt_labels = self.dataset.get_gt_labels()
+        gt_labels = np.array([dataset_gt_labels[idx] for idx in self.indices])
+        return gt_labels
+
+    def __getitem__(self, idx):
+        return self.dataset[self.indices[idx]]
+
+    def __len__(self):
+        return len(self.indices)
+
+    def evaluate(self, *args, **kwargs):
+        kwargs['indices'] = self.indices
+        return self.dataset.evaluate(*args, **kwargs)
