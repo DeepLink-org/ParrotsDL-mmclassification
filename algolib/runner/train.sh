@@ -1,51 +1,48 @@
 #!/bin/bash
 set -x
- 
+set -o pipefail
+set -e
+
+# 0. check the most important SMART_ROOT
+echo  "!!!!!SMART_ROOT is" $SMART_ROOT
 if $SMART_ROOT; then
-    echo "SMART_ROOT is None, Please set SMART_ROOT"
+    echo "SMART_ROOT is None,Please set SMART_ROOT"
     exit 0
 fi
 
-# 0. build soft link for mm configs
-if [ -x "$SMART_ROOT/submodules" ];then
-    submodules_root=$SMART_ROOT
+# 1. set env_path and build soft links for mm configs
+if [[ $PWD =~ "mmcls" ]]
+then 
+    pyroot=$PWD
 else
-    submodules_root=$PWD
-fi
-
-if [ -d "$submodules_root/submodules/mmcls/algolib/configs" ]
-then
-    rm -rf $submodules_root/submodules/mmcls/algolib/configs
-    ln -s $submodules_root/submodules/mmcls/configs $submodules_root/submodules/mmcls/algolib/
-else
-    ln -s $submodules_root/submodules/mmcls/configs $submodules_root/submodules/mmcls/algolib/
-fi
-
-# 1. build file folder for save log,format: algolib_gen/frame
-mkdir -p algolib_gen/mmcls/$3
-export PYTORCH_VERSION=1.4
-
-# 2. set time
-now=$(date +"%Y%m%d_%H%M%S")
- 
-# 3. set env
-path=$PWD
-if [[ "$path" =~ "submodules" ]]
-then
-    pyroot=$submodules_root/mmcls
-else
-    pyroot=$submodules_root/submodules/mmcls
+    pyroot=$PWD/mmcls
 fi
 echo $pyroot
+if [ -d "$pyroot/algolib/configs" ]
+then
+    rm -rf $pyroot/algolib/configs
+    ln -s $pyroot/configs $pyroot/algolib/
+else
+    ln -s $pyroot/configs $pyroot/algolib/
+fi
+
+# 2. build file folder for save log and set time
+mkdir -p algolib_gen/mmcls/$3
+now=$(date +"%Y%m%d_%H%M%S")
+
+# 3. set env variables
+export PYTORCH_VERSION=1.4
 export PYTHONPATH=$pyroot:$PYTHONPATH
-export FRAME_NAME=mmcls    #customize for each frame
 export MODEL_NAME=$3
- 
-# 4. set init_path
-export PYTHONPATH=$SMART_ROOT/common/sites/:$PYTHONPATH
- 
+export FRAME_NAME=mmcls    #customize for each frame
+export PARROTS_DEFAULT_LOGGER=FALSE
+
+# 4. init_path
+export PYTHONPATH=${SMART_ROOT}:$PYTHONPATH
+export PYTHONPATH=${SMART_ROOT}/common/sites:$PYTHONPATH
+
 # 5. build necessary parameter
-partition=$1 
+partition=$1  
 name=$3
 MODEL_NAME=$3
 g=$(($2<8?$2:8))
@@ -53,10 +50,8 @@ array=( $@ )
 EXTRA_ARGS=${array[@]:3}
 EXTRA_ARGS=${EXTRA_ARGS//--resume/--resume-from}
 SRUN_ARGS=${SRUN_ARGS:-""}
- 
-# 6. model choice
-export PARROTS_DEFAULT_LOGGER=FALSE
 
+# 6. model list
 case $MODEL_NAME in
     "resnet50_b32x8_imagenet")
         FULL_MODEL="resnet/resnet50_b32x8_imagenet"
@@ -99,11 +94,12 @@ case $MODEL_NAME in
        ;; 
 esac
 
+# 7. set port and choice model
 port=`expr $RANDOM % 10000 + 20000`
-
 file_model=${FULL_MODEL##*/}
 folder_model=${FULL_MODEL%/*}
 
+# 8. run model
 srun -p $1 -n$2 \
         --gres gpu:$g \
         --ntasks-per-node $g \
