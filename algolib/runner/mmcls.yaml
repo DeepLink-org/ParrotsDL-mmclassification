@@ -29,3 +29,4 @@ models:
   # - vit-base-p16_pt-64xb64_in1k-224
   # 该模型存在精度未对其问题，低了8.23%，详见issue: https://jira.sensetime.com/browse/PARROTSXQ-7942
   # - vgg19bn_b32x8_imagenet
+  - deit-base_pt-16xb64_in1k
