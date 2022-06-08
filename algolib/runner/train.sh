@@ -87,6 +87,9 @@ case $MODEL_NAME in
     "swin_small_224_b16x64_300e_imagenet")
         FULL_MODEL="swin_transformer/swin_small_224_b16x64_300e_imagenet"
         ;;
+    "deit-base_pt-16xb64_in1k")
+        FULL_MODEL="deit/deit-base_pt-16xb64_in1k"
+        ;;
     *)
        echo "invalid $MODEL_NAME"
        exit 1
