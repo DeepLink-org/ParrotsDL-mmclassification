@@ -120,8 +120,14 @@ policies = [
      dict(type='Equalize', prob=0.6)],
 ]
 
+dataset_type='ImageNet'
+file_client_args = dict(
+backend='petrel',
+path_mapping=dict({'/mnt/lustre/sharedata/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+}))
+
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', file_client_args=file_client_args),
     dict(type='RandomResizedCrop', size=224, backend='pillow'),
     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
     dict(type='AutoAugment', policies=policies),
@@ -141,7 +147,10 @@ train_pipeline = [
 data = dict(
     samples_per_gpu=128,
     workers_per_gpu=4,
-    train=dict(pipeline=train_pipeline))
+    train=dict(type=dataset_type,
+               data_prefix='/mnt/lustre/share_data/PAT/datasets/Imagenet/train',
+               pipeline=train_pipeline))
+
 evaluation = dict(interval=10, metric='accuracy')
 
 # optimizer
