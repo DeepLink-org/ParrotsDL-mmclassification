@@ -8,6 +8,7 @@ from mmcv.utils import digit_version
 
 
 def is_tracing() -> bool:
+    if 'parrots'==torch.__version__: return False
     if digit_version(torch.__version__) >= digit_version('1.6.0'):
         on_trace = torch.jit.is_tracing()
         # In PyTorch 1.6, torch.jit.is_tracing has a bug.
