@@ -90,6 +90,9 @@ case $MODEL_NAME in
     "deit-base_pt-16xb64_in1k")
         FULL_MODEL="deit/deit-base_pt-16xb64_in1k"
         ;;
+    "resnet101_8xb32_in1k")
+        FULL_MODEL="resnet/resnet101_8xb32_in1k"
+    ;;
     *)
        echo "invalid $MODEL_NAME"
        exit 1
