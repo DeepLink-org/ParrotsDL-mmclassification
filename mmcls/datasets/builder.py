@@ -135,8 +135,9 @@ def build_dataloader(dataset,
         worker_init_fn, num_workers=num_workers, rank=rank,
         seed=seed) if seed is not None else None
 
-    if digit_version(torch.__version__) >= digit_version('1.8.0'):
-        kwargs['persistent_workers'] = persistent_workers
+    kwargs['persistent_workers'] = persistent_workers
+    # if digit_version(torch.__version__) >= digit_version('1.8.0'):
+    #     kwargs['persistent_workers'] = persistent_workers
 
     data_loader = DataLoader(
         dataset,
