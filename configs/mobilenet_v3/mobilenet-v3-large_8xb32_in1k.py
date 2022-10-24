@@ -148,7 +148,7 @@ data = dict(
     samples_per_gpu=128,
     workers_per_gpu=4,
     train=dict(type=dataset_type,
-               data_prefix='/mnt/lustre/share_data/PAT/datasets/Imagenet/train',
+               data_prefix='/mnt/lustre/share/images/train',
                pipeline=train_pipeline))
 
 evaluation = dict(interval=10, metric='accuracy')
