@@ -13,9 +13,9 @@ SRUN_ARGS=${SRUN_ARGS:-""}
 PY_ARGS=${@:5}
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
-srun -p ${PARTITION} \
+srun -p ${PARTITION} -w HOST-10-142-4-172 \
     --job-name=${JOB_NAME} \
-    --gres=gpu:${GPUS_PER_NODE} \
+    --gres=mlu:${GPUS_PER_NODE} \
     --ntasks=${GPUS} \
     --ntasks-per-node=${GPUS_PER_NODE} \
     --cpus-per-task=${CPUS_PER_TASK} \

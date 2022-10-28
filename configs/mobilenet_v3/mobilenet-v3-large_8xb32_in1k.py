@@ -142,7 +142,13 @@ data = dict(
     samples_per_gpu=128,
     workers_per_gpu=4,
     train=dict(pipeline=train_pipeline))
-evaluation = dict(interval=10, metric='accuracy')
+evaluation = dict(interval=1, metric='accuracy')
+log_config = dict(
+    interval=1,
+    hooks=[
+        dict(type='TextLoggerHook'),
+        dict(type='TensorboardLoggerHook')
+])
 
 # optimizer
 optimizer = dict(
@@ -152,7 +158,9 @@ optimizer = dict(
     momentum=0.9,
     eps=0.0316,
     weight_decay=1e-5)
+# optimizer = dict(type='SGD', lr=0.1, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
+
 # learning policy
 lr_config = dict(policy='step', step=2, gamma=0.973, by_epoch=True)
 runner = dict(type='EpochBasedRunner', max_epochs=600)

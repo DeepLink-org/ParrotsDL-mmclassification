@@ -30,6 +30,7 @@ def find_folders(root: str,
             list_file=False,
             recursive=False,
         ))
+    # print(len(folders))
     folders.sort()
     folder_to_idx = {folders[i]: i for i in range(len(folders))}
     return folders, folder_to_idx
@@ -173,7 +174,9 @@ class CustomDataset(BaseDataset):
         """find samples from ``data_prefix``."""
         file_client = FileClient.infer_client(self.file_client_args,
                                               self.data_prefix)
+        # print("elf.data_prefix, file_client: ", self.data_prefix, file_client)
         classes, folder_to_idx = find_folders(self.data_prefix, file_client)
+        # print("classes: ", classes)
         samples, empty_classes = get_samples(
             self.data_prefix,
             folder_to_idx,

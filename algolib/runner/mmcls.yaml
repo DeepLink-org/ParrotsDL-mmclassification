@@ -17,6 +17,7 @@ global_model_strategy:
 
 models:
   - resnet50_b32x8_imagenet
+  - resnet101_8xb32_in1k
   - mobilenet_v2_b32x8_imagenet
   - seresnet50_b32x8_imagenet
   - shufflenet_v1_1x_b64x16_linearlr_bn_nowd_imagenet

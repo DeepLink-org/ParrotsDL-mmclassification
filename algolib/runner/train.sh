@@ -55,6 +55,9 @@ case $MODEL_NAME in
     "resnet50_b32x8_imagenet")
         FULL_MODEL="resnet/resnet50_b32x8_imagenet"
         ;;
+    "resnet101_8xb32_in1k")
+        FULL_MODEL="resnet/resnet101_8xb32_in1k"
+        ;;
     "mobilenet_v2_b32x8_imagenet")
         FULL_MODEL="mobilenet_v2/mobilenet_v2_b32x8_imagenet"
         ;;
@@ -102,10 +105,11 @@ file_model=${FULL_MODEL##*/}
 folder_model=${FULL_MODEL%/*}
 
 # 8. run model
-srun -p $1 -n$2 \
-        --gres gpu:$g \
-        --ntasks-per-node $g \
-        --job-name=${FRAME_NAME}_${MODEL_NAME} ${SRUN_ARGS}\
+# srun -p camb_temp --gres=mlu:1 /usr/local/neuware/bin/cnperf-cli records --args
+        #/usr/local/neuware/bin/cnperf-cli record --args \
+srun -p $1 -n$2 -x HOST-10-142-4-[190,191] \
+        --gres=mlu:$g \
+        --job-name=${FRAME_NAME}_${MODEL_NAME} ${SRUN_ARGS} \
     python -u $pyroot/tools/train.py $pyroot/algolib/configs/$folder_model/$file_model.py --launcher=slurm  \
     --work-dir=algolib_gen/${FRAME_NAME}/${MODEL_NAME} --cfg-options dist_params.port=$port $EXTRA_ARGS \
     2>&1 | tee algolib_gen/${FRAME_NAME}/${MODEL_NAME}/train.${MODEL_NAME}.log.$now
