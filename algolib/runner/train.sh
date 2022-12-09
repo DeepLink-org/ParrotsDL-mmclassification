@@ -58,6 +58,9 @@ case $MODEL_NAME in
     "mobilenet_v2_b32x8_imagenet")
         FULL_MODEL="mobilenet_v2/mobilenet_v2_b32x8_imagenet"
         ;;
+    "mobilenet-v2_8xb32_in1k")
+        FULL_MODEL="mobilenet_v2/mobilenet-v2_8xb32_in1k"
+        ;;
     "seresnet50_b32x8_imagenet")
         FULL_MODEL="seresnet/seresnet50_b32x8_imagenet"
         ;;
@@ -90,6 +93,33 @@ case $MODEL_NAME in
     "deit-base_pt-16xb64_in1k")
         FULL_MODEL="deit/deit-base_pt-16xb64_in1k"
         ;;
+    "resnet34_8xb32_in1k")
+        FULL_MODEL="resnet/resnet34_8xb32_in1k"
+        ;;
+    "shufflenet-v2-1x_16xb64_in1k")
+        FULL_MODEL="shufflenet_v2/shufflenet-v2-1x_16xb64_in1k"
+        ;;
+    "swin-base_16xb64_in1k")
+        FULL_MODEL="swin_transformer/swin-base_16xb64_in1k"
+        ;;
+    "vgg19_8xb32_in1k")
+        FULL_MODEL="vgg/vgg19_8xb32_in1k"
+        ;;
+    "vgg16_8xb32_in1k")
+        FULL_MODEL="vgg/vgg16_8xb32_in1k"
+        ;;
+    "vgg16bn_8xb32_in1k")
+        FULL_MODEL="vgg/vgg16bn_8xb32_in1k"
+        ;;
+    "resnet50_8xb32_in1k")
+        FULL_MODEL="resnet/resnet50_8xb32_in1k"
+        ;;
+    "resnetv1d50_8xb32_in1k")
+        FULL_MODEL="resnet/resnetv1d50_8xb32_in1k"
+        ;;
+    "seresnet50_8xb32_in1k")
+        FULL_MODEL="seresnet/seresnet50_8xb32_in1k"
+        ;;
     "resnet101_8xb32_in1k")
         FULL_MODEL="resnet/resnet101_8xb32_in1k"
     ;;
@@ -106,7 +136,7 @@ folder_model=${FULL_MODEL%/*}
 
 # 8. run model
 srun -p $1 -n$2 \
-        --gres gpu:$g \
+        --gres mlu:$g \
         --ntasks-per-node $g \
         --job-name=${FRAME_NAME}_${MODEL_NAME} ${SRUN_ARGS}\
     python -u $pyroot/tools/train.py $pyroot/algolib/configs/$folder_model/$file_model.py --launcher=slurm  \

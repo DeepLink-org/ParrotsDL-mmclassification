@@ -31,3 +31,13 @@ models:
   # - vgg19bn_b32x8_imagenet
   - deit-base_pt-16xb64_in1k
   - resnet101_8xb32_in1k
+  - resnet34_8xb32_in1k
+  - shufflenet-v2-1x_16xb64_in1k
+  - swin-base_16xb64_in1k
+  - vgg19_8xb32_in1k
+  - vgg16bn_8xb32_in1k
+  - resnet50_8xb32_in1k
+  - resnetv1d50_8xb32_in1k
+  - seresnet50_8xb32_in1k
+  - mobilenet-v2_8xb32_in1k
+  - vgg16_8xb32_in1k

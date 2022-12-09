@@ -121,10 +121,11 @@ policies = [
 ]
 
 dataset_type='ImageNet'
-file_client_args = dict(
-backend='petrel',
-path_mapping=dict({'/mnt/lustre/sharedata/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
-}))
+# file_client_args = dict(
+# backend='petrel',
+# path_mapping=dict({'/mnt/lustre/sharedata/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+# }))
+file_client_args = dict(backend='disk')
 
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=file_client_args),
