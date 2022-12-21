@@ -25,5 +25,35 @@
     },
     "swin_small_224_b16x64_300e_imagenet": {
         "path": "/mnt/lustre/share_data/PAT/datasets/mmcls/checkpoint/swin_small_224_b16x64_300e_imagenet/epoch_300.pth"
+    },
+    "resnet34_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/resnet34_8xb32_in1k_20210831-f257d4e6.pth"
+    },
+    "shufflenet-v2-1x_16xb64_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/shufflenet_v2_batch1024_imagenet_20200812-5bf4721e.pth"
+    },
+    "swin-base_16xb64_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/swin_base_patch4_window7_224-4670dd19.pth"
+    },
+    "vgg19_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/vgg19_batch256_imagenet_20210208-e6920e4a.pth"
+    },
+    "vgg16bn_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/vgg16_bn_batch256_imagenet_20210208-7e55cd29.pth"
+    },
+    "resnet50_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/resnet50_8xb32_in1k_20210831-ea4938fc.pth"
+    },
+    "resnetv1d50_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/resnetv1d50_b32x8_imagenet_20210531-db14775a.pth"
+    },
+    "seresnet50_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/se-resnet50_batch256_imagenet_20200804-ae206104.pth"
+    },
+    "resnet101_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/resnet101_8xb32_in1k_20210831-539c63f8.pth"
+    },
+    "vgg16_8xb32_in1k": {
+        "path": "/mnt/lustre/share_data/PAT/one_iter_run_data/ckpt/vgg16_batch256_imagenet_20210208-db26f1a5.pth"
     }
 }

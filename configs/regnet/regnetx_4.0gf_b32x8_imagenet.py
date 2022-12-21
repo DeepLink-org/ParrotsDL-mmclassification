@@ -5,12 +5,12 @@ _base_ = [
 ]
 
 # dataset settings
-file_client_args = dict(
-    backend='petrel',
-    path_mapping=dict({
-        '/mnt/lustre/share_data/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
-    }))
-# file_client_args = dict(backend='disk')
+# file_client_args = dict(
+#     backend='petrel',
+#     path_mapping=dict({
+#         '/mnt/lustre/share_data/PAT/datasets/Imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
+#     }))
+file_client_args = dict(backend='disk')
 dataset_type = 'ImageNet'
 
 img_norm_cfg = dict(
